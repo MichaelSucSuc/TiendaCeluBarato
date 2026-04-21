@@ -1,0 +1,4 @@
+celubarato/backend/node_modules/
+celubarato/frontend/node_modules/
+celubarato/frontend/dist/
+celubarato/**/.env
