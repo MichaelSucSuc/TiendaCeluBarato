@@ -2,21 +2,35 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const rateLimit = require('express-rate-limit');
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 300,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 app.use(cors());
 app.use(express.json());
+app.use('/api', apiLimiter);
 
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true });
 });
 
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/products', productRoutes);
 
 app.use((err, _req, res, _next) => {

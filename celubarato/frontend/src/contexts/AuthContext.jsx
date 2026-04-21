@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { AuthContext } from './auth-context';
+import { AuthContext } from './authContext';
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem('admin_token'));

@@ -5,10 +5,18 @@ import api from '../services/api';
 function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    api.get(`/products/${id}`).then((response) => setProduct(response.data));
+    api
+      .get(`/products/${id}`)
+      .then((response) => setProduct(response.data))
+      .catch(() => setError('No se pudo cargar el producto.'));
   }, [id]);
+
+  if (error) {
+    return <p className="p-6 text-center text-red-600">{error}</p>;
+  }
 
   if (!product) {
     return <p className="p-6 text-center">Cargando producto...</p>;

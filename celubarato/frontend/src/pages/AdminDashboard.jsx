@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../contexts/useAuth';
 import api from '../services/api';
 
@@ -20,20 +20,33 @@ function AdminDashboard() {
   const [products, setProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(initialForm);
+  const [error, setError] = useState('');
 
-  const fetchProducts = async () => {
-    const response = await api.get('/products');
-    setProducts(response.data);
-  };
+  const fetchProducts = useCallback(async () => {
+    try {
+      const response = await api.get('/products');
+      setProducts(response.data);
+      setError('');
+    } catch {
+      setError('No se pudieron cargar los productos.');
+    }
+  }, []);
 
   useEffect(() => {
     let mounted = true;
 
-    api.get('/products').then((response) => {
-      if (mounted) {
-        setProducts(response.data);
-      }
-    });
+    api.get('/products')
+      .then((response) => {
+        if (mounted) {
+          setProducts(response.data);
+          setError('');
+        }
+      })
+      .catch(() => {
+        if (mounted) {
+          setError('No se pudieron cargar los productos.');
+        }
+      });
 
     return () => {
       mounted = false;
@@ -188,6 +201,7 @@ function AdminDashboard() {
 
         <div className="rounded-xl bg-white p-4 shadow-md">
           <h2 className="text-xl font-semibold">Productos</h2>
+          {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
           <ul className="mt-4 space-y-3">
             {products.map((product) => (
               <li key={product._id} className="rounded-lg border p-3">

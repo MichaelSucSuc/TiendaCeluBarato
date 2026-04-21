@@ -63,6 +63,7 @@ Crear archivo `celubarato/backend/.env` basado en `.env.example`:
 PORT=5000
 MONGO_URI=mongodb://127.0.0.1:27017/celubarato
 JWT_SECRET=REEMPLAZA_CON_UN_SECRETO_LARGO_Y_SEGURO
+ADMIN_PASSWORD_HASH=$2b$12$YXxrBy2Kc/8nhaWbDTe2tOJKhav.MH4ruBuaXXs04KZWQ39gXLFgy
 ```
 
 ### Instalación y ejecución backend
@@ -120,5 +121,6 @@ npm run dev
 
 - JWT obligatorio para crear/editar/eliminar productos.
 - Middleware de autorización para rutas admin.
+- Rate limiting en API y login para mitigar abuso y fuerza bruta.
 - Logout elimina token del `localStorage`.
 - El usuario admin está fijado en backend (`admin@celubarato.com`) y sin endpoint de registro.

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Admin = require('../models/Admin');
-const { ADMIN_EMAIL, ADMIN_PASSWORD_HASH, ADMIN_PASSWORD } = require('../config/admin');
+const { ADMIN_EMAIL, ADMIN_PASSWORD_HASH } = require('../config/admin');
 
 async function initDb() {
   try {
@@ -18,7 +18,6 @@ async function initDb() {
 
     console.log('Base de datos inicializada.');
     console.log(`Admin email: ${ADMIN_EMAIL}`);
-    console.log(`Admin password: ${ADMIN_PASSWORD}`);
     console.log(`Admin bcrypt hash: ${ADMIN_PASSWORD_HASH}`);
   } catch (error) {
     console.error('Error inicializando DB:', error.message);
